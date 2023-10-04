@@ -1,54 +1,83 @@
 const express = require('express');
-
+const fs = require('fs');
 const app = express(); 
 const port = 3000; // define o valor para uma porta
+
 
 app.use(express.json()); //permite utilizar json no body das requisições
 
 
-//associa o express à porta para receber requisições na porta 3000
-//arrow function
-app.listen(port, () =>{
-    const num1 = 45;
-    const num2 = 7;
-    console.log(`Iniciando o servidor na porta:${port}`);
-})
-
-app.get('/', (req, res) => {
-    res.json({nome: "Gilmar", idade: 27})
-})
-app.get('/soma', (req, res) => {
-    res.json({numeros: soma(num1,num2)})
-})
-app.get('/sub', (req, res) => {
-    res.json({numeros: sub(num1,num2)})
-})
-app.get('/operacoes', (req, res) => {
-    res.json({numeros: sub(num1,num2)})
-})
-function soma(a,b){
-    a=3;
-    b=1;
-    const resultado = a+b;
-    return resultado;
+// Função para puxar dados do db.json
+function fetchData() {
+    const rawData = fs.readFileSync('db.json');
+    return JSON.parse(rawData);
 }
-function sub(a,b){
-    a=3;
-    b=1;
-    const resultado = a-b;
-    return resultado;
+function saveData(data){
+    const jsonData = JSON.stringify(data, null, 2);
+    fs.writeFileSync('db.json', jsonData);
+} 
+
+// Rota GET para obter dados
+app.get('/api/dados', (req, res) => {
+    const dados = fetchData();
+    res.json(dados);
+});
 
 
+//API RestFul
 
-    //requisicao do usuario
-    app.get('/api', (req, res) =>{
-        
-        const { num1, num2} = req.query;
-        //const num1 = Number(req.query.num1);
-        //const num2 = Number(req.query.num2)
-        res.json({
-            soma: soma(Number(num1), Number(num2)),
-            sub: num2
-        })
-    })
-}
+//Busca por ID
+app.get('/api/dados/:id', (req, res) => {
+    const dados = fetchData();
+    const id = req.params.id;
+    const dado = dados.find(item => item.id === parseInt(id));
+    if (dado) {
+        res.json(dado);
+    } else {
+        res.status(404).send('Dado não encontrado');
+    }
+});
+// Rota POST para adicionar novo dado
+app.post('/api/dados', express.json(), (req, res) => {
+    const dados = fetchData();
+    const novoDado = req.body;
+    dados.push(novoDado);
+    saveData(dados);
+    res.json(novoDado);
+});
+
+// Rota PUT para atualizar dado existente por ID
+app.put('/api/dados/:id', express.json(), (req, res) => {
+    const dados = fetchData();
+    const id = req.params.id;
+    const index = dados.findIndex(item => item.id === parseInt(id));
+
+    if (index !== -1) {
+        dados[index] = req.body;
+        saveData(dados);
+        res.json(dados[index]);
+    } else {
+        res.status(404).send('Dado não encontrado');
+    }
+});
+
+// Rota DELETE para excluir dado por ID
+app.delete('/api/dados/:id', (req, res) => {
+    const dados = fetchData();
+    const id = req.params.id;
+    const index = dados.findIndex(item => item.id === parseInt(id));
+
+    if (index !== -1) {
+        const deletedData = dados.splice(index, 1);
+        saveData(dados);
+        res.json(deletedData[0]);
+    } else {
+        res.status(404).send('Dado não encontrado');
+    }
+});
+
+
+// Inicia o servidor na porta especificada
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${3000}`);
+});
