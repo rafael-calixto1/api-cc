@@ -1,0 +1,35 @@
+{
+  "funcionarios": [
+    {
+      "id": 1,
+      "nome": "nome",
+      "sobrenome": "Dofuncionario",
+      "cpf": "123123312",
+      "cargo": "tarara",
+      "empresa": "UBC",
+      "cep": "08696040",
+      "idEmpresa" : 1
+    },
+    {
+      "id": 2,
+      "nome": "nome2",
+      "sobrenome": "Dofuncionario",
+      "cpf": "123123312",
+      "cargo": "tarara",
+      "empresa": "UBC",
+      "cep": "654564",
+      "idEmpresa" : 1
+    },
+    {
+      "id": 3,
+      "nome": "Rennam",
+      "sobrenome": "Santos ",
+      "cpf": "1dd56789",
+      "cargo": "mecanico",
+      "empresa": "Techdasdsa Inc",
+      "cep": "08773380",
+      "idEmpresa" : 1
+
+    }
+  ]
+}

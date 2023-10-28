@@ -1,0 +1,34 @@
+{
+    "empresas": [
+        {
+          "id" : 1,
+          "nome" : "BRAZ CUBAS",
+          "cnpj" : "52556412000106"
+      },
+      {
+          "id" : 2,
+          "nome" : "SUZANO PAPEL",
+          "cnpj" : "16404287000155"
+      },
+      {
+        "id" : 3,
+        "nome" : "SANOFI, Suzano",
+        "cnpj" : "10588595001092"
+      },
+      {
+        "id" : 4,
+        "nome" : "BAUMINAS QUIMICA",
+        "cnpj" : "23647365000108"
+      },
+      {
+        "id" : 5,
+        "nome" : "DENVER INDUSTRIA E COMERCIO DE PRODUTOS QUIMICOS",
+        "cnpj" : "53137527000129"
+      },
+      {
+        "id" : 6,
+        "nome" : "CONEXAO WEB TELECOM",
+        "cnpj" : "17225163000175"
+      }
+    ]
+}
