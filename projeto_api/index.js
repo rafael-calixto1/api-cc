@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const axios = require('axios'); 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 app.use(express.json());
 
@@ -12,6 +12,7 @@ function fetchDataFuncionarios() {
         const rawData = fs.readFileSync('db.funcionarios.json', 'utf8');
         return JSON.parse(rawData);
     } catch (err) {
+        console.error('Erro durante a leitura ou na analise dos dados dos funcionarios ', err);
         return { funcionarios: [] };
     }
 }
@@ -22,6 +23,7 @@ function fetchDataEmpresas() {
         const rawData = fs.readFileSync('db.empresas.json', 'utf8');
         return JSON.parse(rawData);
     } catch (err) {
+        console.error('Erro durante a leitura ou na analise dos dados das empresas ', err);
         return { empresas: [] };
     }
 }
@@ -43,6 +45,14 @@ app.get('/api/funcionarios', (req, res) => {
     res.json(funcionarios);
 });
 
+
+// Rota para listar um os funcionarios desempregados
+app.get('/api/funcionarios/desempregados', (req, res) => {
+    const funcionarios = fetchDataFuncionarios().funcionarios;
+    const desempregados = funcionarios.filter(funcionario => funcionario.idEmpresa === 0);
+    res.json(desempregados);
+  });
+  
 // Rota para obter um funcionario especifico atraves do ID
 app.get('/api/funcionarios/:idfuncionario', (req, res) => {
     const dados = fetchDataFuncionarios().funcionarios;
@@ -55,7 +65,8 @@ app.get('/api/funcionarios/:idfuncionario', (req, res) => {
     }
 });
 
-// Rota para obter informacoes do endereco do funcionario atraves do ID e ddde uma consulta externa no VIACEP
+
+// Rota para obter informacoes do endereco do funcionario atraves do ID e de uma consulta externa no VIACEP
 app.get('/api/funcionarios/:idfuncionario/endereco', async (req, res) => {
     try {
         const dados = fetchDataFuncionarios().funcionarios;
@@ -159,7 +170,7 @@ app.get('/api/empresas/:idempresa/informacoes', async (req, res) => {
             return;
         }
 
-        // Fazer uma requisicao ao CNPJ J zusando o CNPJ da empresa
+        // Fazer uma requisicao ao CNPJA usando o CNPJ da empresa
         const cnpj = empresa.cnpj;
         const config = {
             method: 'get',
@@ -174,6 +185,78 @@ app.get('/api/empresas/:idempresa/informacoes', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao buscar informações da empresa.');
+    }
+});
+
+
+
+//###################CONTABILIZADOR DE PASSAGENS################################
+app.post('/api/calculo', async (req, res) => {
+    try {
+        // Check if idempresa and idfuncionario are present in the request body
+        if (!req.body.idempresa || !req.body.idfuncionario) {
+            res.status(400).send('idempresa and idfuncionario are required in the request body.');
+            return;
+        }
+
+        const dados = fetchDataEmpresas().empresas;
+        const idEmpresa = req.body.idempresa;
+        const idFuncionario = req.body.idfuncionario;
+
+        const empresa = dados.find(item => item.id === parseInt(idEmpresa));
+
+        if (!empresa || !empresa.cnpj) {
+            res.status(404).send('Empresa não encontrada ou não possui CNPJ.');
+            return;
+        }
+
+        // Retrieve the CEP of the funcionario from your database
+        const funcionarioDatabase = fetchDataFuncionarios();
+        const funcionario = funcionarioDatabase.funcionarios.find(item => item.id === parseInt(idFuncionario));
+
+        if (!funcionario || !funcionario.cep) {
+            res.status(404).send('Funcionario não encontrado ou não possui CEP.');
+            return;
+        }
+
+        // Fazer uma requisicao ao CNPJA usando o CNPJ da empresa
+        const cnpj = empresa.cnpj;
+        const config = {
+            method: 'get',
+            url: `https://api.cnpja.com/office/${cnpj}`,
+            headers: {
+                'Authorization': apiKey
+            }
+        };
+        const cnpjResponse = await axios(config);
+
+        // Extrair a cidade da empresa
+        const cidadeEmpresa = cnpjResponse.data.address.city;
+
+        // Retrieve the CEP of the funcionario from your database and use it to make a request to ViaCEP
+        const cepFuncionario = funcionario.cep;
+        const viaCepResponse = await axios.get(`http://viacep.com.br/ws/${cepFuncionario}/json/`);
+        const cidadeFuncionario = viaCepResponse.data.localidade;
+
+        // Check if the cities are the same
+        const isSameCity = cidadeEmpresa === cidadeFuncionario;
+
+        // Define a message based on whether the cities are the same
+        let message = 'As cidades são diferentes.';
+        if (isSameCity) {
+            message = 'As cidades são iguais.';
+        }
+
+        // Now you can use cidadeFuncionario, cidadeEmpresa, isSameCity, and message as needed in your calculations
+
+        res.json({
+            cidadeDaEmpresa: cidadeEmpresa,
+            cidadeDoFuncionario: cidadeFuncionario,
+            message: message
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao buscar informações da empresa ou funcionário.');
     }
 });
 
