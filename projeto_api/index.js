@@ -33,7 +33,7 @@ function saveDataFuncionarios(data) {
     const jsonData = JSON.stringify(data, null, 2);
     fs.writeFileSync('db.funcionarios.json', jsonData, 'utf8');
 }
-// Funcao para ler os dados de 'db.empresas.json'
+// Funcao para salvar os dados de 'db.empresas.json'
 function saveDataEmpresas(data) {
     const jsonData = JSON.stringify(data, null, 2);
     fs.writeFileSync('db.empresas.json', jsonData, 'utf8');
