@@ -193,7 +193,7 @@ app.get('/api/empresas/:idempresa/informacoes', async (req, res) => {
 //###################CONTABILIZADOR DE PASSAGENS################################
 app.post('/api/calculo', async (req, res) => {
     try {
-        // Check if idempresa and idfuncionario are present in the request body
+        // Checa se idempresa e idfuncionario estao no corpo de requisicao
         if (!req.body.idempresa || !req.body.idfuncionario) {
             res.status(400).send('idempresa and idfuncionario are required in the request body.');
             return;
@@ -233,21 +233,21 @@ app.post('/api/calculo', async (req, res) => {
         // Extrair a cidade da empresa
         const cidadeEmpresa = cnpjResponse.data.address.city;
 
-        // Retrieve the CEP of the funcionario from your database and use it to make a request to ViaCEP
+        // Pega o CEP do funcionario e usa para fazer uma solicitação ao ViaCEP
         const cepFuncionario = funcionario.cep;
         const viaCepResponse = await axios.get(`http://viacep.com.br/ws/${cepFuncionario}/json/`);
         const cidadeFuncionario = viaCepResponse.data.localidade;
 
-        // Check if the cities are the same
+        // Checa se as cidades sao a mesma
         const isSameCity = cidadeEmpresa === cidadeFuncionario;
 
-        // Define a message based on whether the cities are the same
+        // Define uma mensagem baseado nas cidades da enpresa e do funcionario
         let message = 'As cidades são diferentes.';
         if (isSameCity) {
             message = 'As cidades são iguais.';
         }
 
-        // Now you can use cidadeFuncionario, cidadeEmpresa, isSameCity, and message as needed in your calculations
+       
 
         res.json({
             cidadeDaEmpresa: cidadeEmpresa,
