@@ -40,18 +40,30 @@ function saveDataEmpresas(data) {
 }
 
 // Rota para obter uma lista com todos os funcionarios
+// Rota para obter a lista de funcionarios
 app.get('/api/funcionarios', (req, res) => {
-    const funcionarios = fetchDataFuncionarios().funcionarios;
-    res.json(funcionarios);
+    try {
+        const funcionarios = fetchDataFuncionarios().funcionarios;
+        res.json(funcionarios);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao obter a lista de funcionarios.');
+    }
 });
 
 
-// Rota para listar um os funcionarios desempregados
+
+// Rota para obter a lista de funcionarios desempregados
 app.get('/api/funcionarios/desempregados', (req, res) => {
-    const funcionarios = fetchDataFuncionarios().funcionarios;
-    const desempregados = funcionarios.filter(funcionario => funcionario.idEmpresa === 0);
-    res.json(desempregados);
-  });
+    try {
+        const funcionarios = fetchDataFuncionarios().funcionarios;
+        const desempregados = funcionarios.filter(funcionario => funcionario.idEmpresa === 0);
+        res.json(desempregados);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao obter a lista de funcionarios desempregados.'); 
+    }
+});
   
 // Rota para obter um funcionario especifico atraves do ID
 app.get('/api/funcionarios/:idfuncionario', (req, res) => {
@@ -88,16 +100,36 @@ app.get('/api/funcionarios/:idfuncionario/endereco', async (req, res) => {
     }
 });
 
-// rota para adicionar um novo funcionario
+// Rota para adicionar um novo funcionario
 app.post('/api/funcionarios', express.json(), (req, res) => {
-    const dados = fetchDataFuncionarios();
-    const novoDado = req.body;
-    const funcionarios = dados.funcionarios;
-    novoDado.id = funcionarios.length > 0 ? Math.max(...funcionarios.map(f => f.id)) + 1 : 1;
-    funcionarios.push(novoDado);
-    saveDataFuncionarios(dados);
-    res.json(novoDado);
+    try {
+        const dados = fetchDataFuncionarios();
+        const novoDado = {
+            nome: req.body.nome,
+            sobrenome: req.body.sobrenome,
+            cpf: req.body.cpf,
+            cargo: req.body.cargo || 'desempregado',
+            empresa: req.body.empresa,
+            cep: req.body.cep,
+            idEmpresa: req.body.idEmpresa || 0
+        };
+
+        if (!novoDado.nome || !novoDado.cpf || !novoDado.cep) {
+            throw new Error('O nome, CPF e CEP do funcionario são obrigatórios.');
+        }
+
+        const funcionarios = dados.funcionarios;
+        novoDado.id = funcionarios.length > 0 ? Math.max(...funcionarios.map(f => f.id)) + 1 : 1;
+
+        funcionarios.push(novoDado);
+        saveDataFuncionarios(dados);
+        res.status(201).json(novoDado); //Funcionario criado com sucesso
+    } catch (error) {
+        console.error(error);
+        res.status(400).send(error.message); // Erro ao criar um novo funcionario
+    }
 });
+
 
 // Atualizar funcionarios atraves de seu ID
 app.put('/api/funcionarios/:id', express.json(), (req, res) => {
@@ -119,9 +151,15 @@ app.put('/api/funcionarios/:id', express.json(), (req, res) => {
 //############### EMPRESAS ###################
 
 //obter empresas lista de empresas
+// Rota para obter a lista de empresas
 app.get('/api/empresas', (req, res) => {
-    const empresas = fetchDataEmpresas().empresas;
-    res.json(empresas);
+    try {
+        const empresas = fetchDataEmpresas().empresas;
+        res.json(empresas);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao obter a lista de empresas.'); //Erro interno no servidor
+    }
 });
 
 //Obter uma unica empresa
@@ -135,6 +173,41 @@ app.get('/api/empresas/:idempresa', (req, res) => {
         res.status(404).send('Empresa não encontrada');
     }
 });
+
+// Rota para adicionar uma nova empresa
+app.post('/api/empresas', express.json(), (req, res) => {
+    try {
+        const dados = fetchDataEmpresas();
+        const novaEmpresa = {
+            nome: req.body.nome,
+            cnpj: req.body.cnpj
+        };
+
+        if (!novaEmpresa.nome || !novaEmpresa.cnpj) {
+            throw new Error('O nome e o CNPJ da empresa são obrigatórios.');
+        }
+
+        const empresas = dados.empresas;
+
+         // Gerar id para a empresa
+        novaEmpresa.id = empresas.length > 0 ? Math.max(...empresas.map(e => e.id)) + 1 : 1;
+
+        empresas.push(novaEmpresa);
+        saveDataEmpresas(dados);
+
+        res.status(201).json(novaEmpresa); // Criado com sucesso
+    } catch (error) {
+        console.error(error);
+
+        // Handle specific error cases
+        if (error.message === 'O nome e o CNPJ da empresa são obrigatórios.') {
+            res.status(400).send(error.message);  // Má requisição
+        } else {
+            res.status(500).send('Erro ao adicionar a nova empresa.'); // Erro interno do servidor
+        }
+    }
+});
+
 
 
 //obter funcionarios vinculados a empresa 
@@ -154,8 +227,6 @@ app.get('/api/empresas/:idEmpresa/funcionarios', (req, res) => {
 
 
 // CNPJ JA
-
-
 const apiKey = 'e0a9cc03-3b9a-47f8-af1c-886b472dd1bd-b7d6e4a0-cb4f-41a1-a51d-14c277d58ace';
 
 // Rota para obter a informacao sobre uma empresa através do ID
@@ -195,7 +266,7 @@ app.post('/api/calculo', async (req, res) => {
     try {
         // Checa se idempresa e idfuncionario estao no corpo de requisicao
         if (!req.body.idempresa || !req.body.idfuncionario) {
-            res.status(400).send('idempresa and idfuncionario sao necessarios no corpo de requisicao.');
+            res.status(400).send('idempresa e idfuncionario sao necessarios no corpo de requisicao.');
             return;
         }
 
@@ -210,7 +281,7 @@ app.post('/api/calculo', async (req, res) => {
             return;
         }
 
-        // Retrieve the CEP of the funcionario from your database
+        // Extraitr o CEP do funcionario no banco de dados
         const funcionarioDatabase = fetchDataFuncionarios();
         const funcionario = funcionarioDatabase.funcionarios.find(item => item.id === parseInt(idFuncionario));
 
