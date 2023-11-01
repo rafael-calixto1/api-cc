@@ -195,7 +195,7 @@ app.post('/api/calculo', async (req, res) => {
     try {
         // Checa se idempresa e idfuncionario estao no corpo de requisicao
         if (!req.body.idempresa || !req.body.idfuncionario) {
-            res.status(400).send('idempresa and idfuncionario are required in the request body.');
+            res.status(400).send('idempresa and idfuncionario sao necessarios no corpo de requisicao.');
             return;
         }
 
@@ -232,21 +232,29 @@ app.post('/api/calculo', async (req, res) => {
 
         // Extrair a cidade da empresa
         const cidadeEmpresa = cnpjResponse.data.address.city;
+        //Extrair estado da empresa 
+        const estadoEmpresa = cnpjResponse.data.address.state;
 
         // Pega o CEP do funcionario e usa para fazer uma solicitação ao ViaCEP
         const cepFuncionario = funcionario.cep;
         const viaCepResponse = await axios.get(`http://viacep.com.br/ws/${cepFuncionario}/json/`);
         const cidadeFuncionario = viaCepResponse.data.localidade;
 
+        // Pega o estado do funcionario
+        const estadoFuncionario = viaCepResponse.data.uf;
+
         // Checa se as cidades sao a mesma
         const isSameCity = cidadeEmpresa === cidadeFuncionario;
+        //Checa se sao os mesmos estados
+       const isSameState = estadoEmpresa === estadoFuncionario;
 
         // Define uma mensagem baseado nas cidades da enpresa e do funcionario
-        let message = 'As cidades são diferentes.';
+        let message = 'Funcionario e empresa se situam em estados diferentes, logo a contratacao eh inviavel';
         if (isSameCity) {
-            message = 'As cidades são iguais.';
+            message = 'cidade do funcionario e empresa coincidem, logo devera pagar apenas uma passagem';
+        }else if(isSameState){
+            message = 'Estado do funcionario e da empresa coincidem, logo devera pagar pelo menos uma passagem';
         }
-
        
 
         res.json({
