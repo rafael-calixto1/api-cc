@@ -29,6 +29,36 @@
       "id": 6,
       "nome": "CONEXAO WEB TELECOM",
       "cnpj": "17225163000175"
+    },
+    {
+      "id": 7,
+      "nome": "AUTOMOB SA",
+      "cnpj": "43513237000189"
+    },
+    {
+      "id": 8,
+      "nome": "VISIVEL - LIMPEZA AMBIENTAL LTDA",
+      "cnpj": "65898322000145"
+    },
+    {
+      "id": 9,
+      "nome": "VISIVEL - LIMPEZA AMBIENTAL LTDA",
+      "cnpj": "69047157000179"
+    },
+    {
+      "id": 10,
+      "nome": "TALARES EMPREENDIMENTOS, PARTICIPACOES E SERVICOS LTD",
+      "cnpj": "03102723000190"
+    },
+    {
+      "id": 11,
+      "nome": "EDMA - EMPRESA DE DESENVOLVIMENTO E MECANIZACAO AGROPECUARIA",
+      "cnpj": "03927262000194"
+    },
+    {
+      "id": 12,
+      "nome": "MAHLE BEHR GERENCIAMENTO TERMICO BRASIL LTDA",
+      "cnpj": "56167091000109"
     }
   ]
 }
