@@ -28,7 +28,8 @@ Informacoes sobre os Endpoints
 ```
 
 ### `PUT /api/funcionarios`
-- Descricao: Cria um novo funcionario
+
+- Descricao: atualiza um funcionario
 - Tipo de Requisicao
 - Request Body Example:
 ```json
@@ -49,14 +50,21 @@ Informacoes sobre os Endpoints
 - Request Body: nenhum.
 
 
-### `GET /api/funcionarios/:idfuncionario`
-- Descricao: Traz um funcionario especifico atraves do ID
-- Requisição por parametros
 
+### `GET /api/funcionarios/:idfuncionario/endereco`
+- Descricao: traz as informações do CEP da pessoa de acordo com o ID
+- Requisicao por parametros
 
-  ### `GET /api/funcionarios/:idfuncionario/endereco`
-  - Descricao: Cria um novo funcionario
-  - Requisicao por parametros
+  
+  ## Empresas
+
+### `GET /api/empresas`
+- Descricao: Cria uma lista com as empresas
+- Parameters: nenhum.
+- Request Body: nenhum.
+
+### `GET /api/empresas/:idempresa`
+- Descricao: Pega uma unica empresa
 
 
 
