@@ -92,6 +92,16 @@ Informacoes sobre os Endpoints
 }
 ```
 
+### `POST /api/empresas`
+- Descricao: Cria uma nova empresa
+- requisicao por corpo de requisicao
+```json
+ {
+     "nome" : "BRAZ CUBAS",
+    "cnpj" : "52556412000106"
+}
+```
+
 
 
 
