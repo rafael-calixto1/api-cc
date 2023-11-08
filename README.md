@@ -25,3 +25,31 @@ Informacoes sobre os Endpoints
    "cep": 777777777,
    "idempresa": 7
 }
+```
+
+### `PUT /api/funcionarios`
+- Descricao: Cria um novo funcionario
+- Tipo de Requisicao
+- Request Body Example:
+```json
+{
+   “nome” : “nome”,
+    “sobrenome” : “sobrenome”,
+    “cpf” : “cpf”,
+    “cargo” : “cargo”,
+    “empresa” : “empresa”,
+    “cep” : 777777777,
+    “idempresa” : 7
+}
+```
+
+### `GET /api/funcionarios/desempregados
+- Descricao: Traz uma lista com todas as pessoas que não possuem empresa vinculada
+- Parameters: nenhum.
+- Request Body: nenhum.
+```
+
+  
+
+
+
