@@ -65,6 +65,34 @@ Informacoes sobre os Endpoints
 
 ### `GET /api/empresas/:idempresa`
 - Descricao: Pega uma unica empresa
+- Requisicao por parametros
+
+
+### `GET /api/empresas/:idempresa/funcionarios`
+- Descricao: Traz uma lista com os funcionarios de uma unica empresa
+- Requisicao por parametros
+
+
+### `GET /api/empresas/:idempresa/informacoes`
+- Descricao: Traz informacoes da empresa acessando a API do CNPJA
+- requisicao por parametros
+
+### `GET /api/calculo`
+- Descricao: Gera o calculo de passagens
+- requisicao por corpo de requisicao
+```json
+{
+   “nome” : “nome”,
+    “sobrenome” : “sobrenome”,
+    “cpf” : “cpf”,
+    “cargo” : “cargo”,
+    “empresa” : “empresa”,
+    “cep” : 777777777,
+    “idempresa” : 7
+}
+```
+
+
 
 
 
