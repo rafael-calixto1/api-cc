@@ -43,13 +43,22 @@ Informacoes sobre os Endpoints
 }
 ```
 
-### `GET /api/funcionarios/desempregados
+### `GET /api/funcionarios/desempregados`
 - Descricao: Traz uma lista com todas as pessoas que não possuem empresa vinculada
 - Parameters: nenhum.
 - Request Body: nenhum.
-```
 
-  
+
+### `GET /api/funcionarios/:idfuncionario`
+- Descricao: Traz um funcionario especifico atraves do ID
+- Requisição por parametros
+
+
+  ### `GET /api/funcionarios/:idfuncionario/endereco`
+  - Descricao: Cria um novo funcionario
+  - Requisicao por parametros
+
+
 
 
 
