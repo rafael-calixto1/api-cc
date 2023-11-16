@@ -37,7 +37,7 @@ Informacoes sobre os Endpoints
    "nome" : "nome",
     "sobrenome" : "sobrenome",
     "cpf" : "cpf",
-    "cargo” : "cargo",
+    "cargo" : "cargo",
     "empresa" : "empresa",
     "cep" : 777777777,
     "idempresa" : 7
