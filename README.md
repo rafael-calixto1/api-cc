@@ -94,7 +94,7 @@ git clone https://github.com/rafael-calixto1/api-cc.git
 - Descricao: Traz informacoes da empresa acessando a API do CNPJA
 - requisicao por parametros
 
-### `GET /api/calculo`
+### `POST /api/calculo`
 - Descricao: Gera o calculo de passagens
 - requisicao por corpo de requisicao
 ```json
