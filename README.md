@@ -34,13 +34,13 @@ Informacoes sobre os Endpoints
 - Request Body Example:
 ```json
 {
-   “nome” : “nome”,
-    “sobrenome” : “sobrenome”,
-    “cpf” : “cpf”,
-    “cargo” : “cargo”,
-    “empresa” : “empresa”,
-    “cep” : 777777777,
-    “idempresa” : 7
+   "nome" : "nome",
+    "sobrenome" : "sobrenome",
+    "cpf" : "cpf",
+    "cargo” : “"argo",
+    "empresa" : "empresa",
+    "cep" : 777777777,
+    "idempresa" : 7
 }
 ```
 
