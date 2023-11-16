@@ -1,6 +1,23 @@
-# API Documentation
+# CALCULO DE PASSAGEM PARA FUNCIONARIOS
 
-Informacoes sobre os Endpoints
+Esta API acessa informações das APIs externas CNPJA que traz informações da Receita Federak e ViaCEP que traz informações do endereço do funcionário. Possui dois arquivos json para armazenar informções de empresas e de funcionarios. 
+
+## Instalação
+
+Para começar a usar a aplicação localmente, siga estas etapas:
+
+### Pré-requisitos
+
+Certifique-se de ter o Node.js instalado na sua máquina. Você pode baixá-lo [aqui](https://nodejs.org/).
+
+### Clonando o repositório
+
+Clone este repositório para sua máquina local usando:
+
+```bash
+git clone https://github.com/rafael-calixto1/api-cc.git
+
+## Informacoes sobre os Endpoints
 
 ## Funcionarios
 
