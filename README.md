@@ -82,13 +82,8 @@ Informacoes sobre os Endpoints
 - requisicao por corpo de requisicao
 ```json
 {
-   “nome” : “nome”,
-    “sobrenome” : “sobrenome”,
-    “cpf” : “cpf”,
-    “cargo” : “cargo”,
-    “empresa” : “empresa”,
-    “cep” : 777777777,
-    “idempresa” : 7
+    "idempresa" : 7,
+    "idfuncionario" : 1
 }
 ```
 
