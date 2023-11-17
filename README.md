@@ -17,7 +17,28 @@ Clone este repositório para sua máquina local usando:
 ```bash
 git clone https://github.com/rafael-calixto1/api-cc.git
 ```
-## Informacoes sobre os Endpoints
+### Instalação
+Entre na pasta da aplicação e instale as dependências usando o comando:
+
+```bash
+cd api-cc/projeto_api
+```
+Faça a instalação das dependências 
+```bash
+npm install
+```
+
+### Execução
+
+Para executar a aplicação, use o comando:
+
+```bash
+npm start
+```
+A aplicação irá rodar na porta 3000 por padrão. Você poderá testar ela em http://localhost:3000
+
+
+## Informações sobre os Endpoints
 
 ## Funcionarios
 
