@@ -2,9 +2,10 @@ const express = require('express');
 const fs = require('fs');
 const axios = require('axios'); 
 const app = express();
+const cors = require('cors');
 const PORT = process.env.PORT || 3030;
 app.use(express.json());
-
+app.use(cors());
 //Funcao para ler os dados de 'db.funcionarios.json'
 function fetchDataFuncionarios() {
     try {
