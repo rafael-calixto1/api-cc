@@ -2,8 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const axios = require('axios'); 
 const app = express();
-const port = 3001;
-
+const PORT = process.env.PORT || 3030;
 app.use(express.json());
 
 //Funcao para ler os dados de 'db.funcionarios.json'
@@ -341,6 +340,6 @@ app.post('/api/calculo', async (req, res) => {
 
 
 // ligar o servidor
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
